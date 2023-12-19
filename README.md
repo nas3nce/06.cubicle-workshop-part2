@@ -1,1 +1,1 @@
-Workshop express and handlebars!
+Workshop with express and handlebars!
