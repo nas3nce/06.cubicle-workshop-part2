@@ -1,1 +1,1 @@
-Softuni workshop express and handlebars!
+Workshop express and handlebars!
