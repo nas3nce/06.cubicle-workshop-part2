@@ -2,14 +2,14 @@ const router = require('express').Router();
 
 const homeController = require('./controllers/homeController');
 const cubeController = require('./controllers/cubeController');
-const createController = require('./controllers/createController');
+const accessoryController = require('./controllers/accessoryController');
 
 router.use(homeController);
-router.use('/create', createController);
-router.use('/details', cubeController);
+router.use('/cube', cubeController);
+router.use('/accessory', accessoryController);
 
 router.get('*', (req, res) => {
-    res.redirect('/404');
+    // res.redirect('/404');
 });
 
 
