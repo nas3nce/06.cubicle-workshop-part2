@@ -24,13 +24,12 @@ router.post('/create', async (req, res) => {
 router.get('/attach/:cubeId', async (req, res) => {
     const cube = await getOne(req.params.cubeId).lean();
 
-    const allAccessories = await getAll();
-    const hasAccessories = allAccessories.length > 0;
-    const accessoryIds = cube.accessories?.map(a => a._id);
+    const accessories = await getNotOwned(cube.accessories).lean();
 
-    const accessories = await getNotOwned(accessoryIds);
+    console.log(cube);
+    console.log(accessories);
 
-
+    const hasAccessories = accessories?.length > 0;
 
     res.render('accessory/attach', { cube, accessories, hasAccessories });
 });

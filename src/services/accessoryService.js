@@ -7,7 +7,7 @@ const getAll = () => Accessory.find().lean();
 const getById = (id) => Accessory.findById(id);
 
 const getNotOwned = (accessoryIds) => {
-    Accessory.find({ _id: { $nin: accessoryIds } });
+    return Accessory.find({ _id: { $nin: accessoryIds } });
 };
 
 module.exports = {
