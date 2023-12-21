@@ -2,9 +2,18 @@ const Accessory = require('../models/Accessory');
 
 const create = (accessoryData) => Accessory.create(accessoryData);
 
-const getAll = async () => await Accessory.find().lean();
+const getAll = () => Accessory.find().lean();
+
+const getById = (id) => Accessory.findById(id);
+
+const getNotOwned = (accessoryIds) => {
+    Accessory.find({ _id: { $nin: accessoryIds } });
+};
 
 module.exports = {
     create,
-    getAll
+    getAll,
+    getById,
+    getNotOwned
 };
+
