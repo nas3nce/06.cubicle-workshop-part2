@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
-const { create, getAll, getNotOwned } = require('../services/accessoryService');
-const { getOne, attachAccessory } = require('../services/cubeService');
+const accessoryService = require('../services/accessoryService');
+const cubeService = require('../services/cubeService');
 
 
 router.get('/create', (req, res) => {
@@ -12,7 +12,7 @@ router.post('/create', async (req, res) => {
 
     const { name, description, imageUrl } = req.body;
 
-    await create({
+    await accessoryService.create({
         name,
         description,
         imageUrl,
@@ -22,12 +22,9 @@ router.post('/create', async (req, res) => {
 });
 
 router.get('/attach/:cubeId', async (req, res) => {
-    const cube = await getOne(req.params.cubeId).lean();
+    const cube = await cubeService.getOne(req.params.cubeId).lean();
 
-    const accessories = await getNotOwned(cube.accessories).lean();
-
-    console.log(cube);
-    console.log(accessories);
+    const accessories = await accessoryService.getNotOwned(cube.accessories).lean();
 
     const hasAccessories = accessories?.length > 0;
 
@@ -38,9 +35,7 @@ router.post('/attach/:cubeId', async (req, res) => {
     const { accessory: accessoryId } = req.body;
     const { cubeId } = req.params;
 
-    await attachAccessory(cubeId, accessoryId);
-
-
+    await cubeService.attachAccessory(cubeId, accessoryId);
 
     res.redirect(`/cube/details/${cubeId}`);
 });
