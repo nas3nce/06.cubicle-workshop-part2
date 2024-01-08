@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const userService = require('../services/userService');
-
+const { exactErrorMsg } = require('../utils/errorHandle');
 router.get('/register', (req, res) => {
     res.render('user/register');
 });
@@ -8,13 +8,20 @@ router.get('/register', (req, res) => {
 router.post('/register', async (req, res) => {
     const { username, password, repeatPassword } = req.body;
 
-    await userService.register({ username, password, repeatPassword });
-     
-    const token = await userService.login(username, password);
+    try {
+        await userService.register({ username, password, repeatPassword });
 
-    res.cookie('auth', token, { httpOnly: true });
+        const token = await userService.login(username, password);
+        res.cookie('auth', token, { httpOnly: true });
 
-    res.redirect('/');
+        res.redirect('/');
+
+    } catch (err) {
+
+        const errorMessage = exactErrorMsg(err);
+
+        res.status(404).render('user/register', { errorMessage });
+    }
 });
 
 router.get('/login', (req, res) => {
@@ -24,11 +31,20 @@ router.get('/login', (req, res) => {
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
-    const token = await userService.login(username, password);
+    try {
+        const token = await userService.login(username, password);
 
-    res.cookie('auth', token, { httpOnly: true });
+        res.cookie('auth', token, { httpOnly: true });
 
-    res.redirect('/');
+        res.redirect('/');
+    } catch (err) {
+        console.log({ err });
+        const errorMessage = exactErrorMsg(err);
+
+        res.status(404).render('user/login', { errorMessage });
+    }
+
+
 });
 
 router.get('/logout', async (req, res) => {

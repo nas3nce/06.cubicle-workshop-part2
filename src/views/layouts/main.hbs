@@ -28,8 +28,18 @@
 
       </ul>
     </header>
+
+    {{#each errorMessage}}
+    <div id="notification">
+      <p id="notification-message">{{this}}</p>
+    </div>
+    {{/each }}
+
     {{{body}}}
   </div>
+
+
+
   <footer>@Cubicle: Exercise for Express.js and Handlebars</footer>
 </body>
 
